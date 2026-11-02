@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class ProjectEuler {
    public static int problem1(){ // Multiple of 3 or 5
       int value = 0;
@@ -9,24 +11,43 @@ public class ProjectEuler {
       return value;
    }
    public static int problem2(){ // Smallest Multiple
-      int testValue = 2521;
-      int indexI = 0;
+      int value = 1;
+      int multiplier = 2;
+      int morphMultiplier = 0;
       int primes[] = {2, 3, 5, 7, 11, 13, 17, 19};
-      int divisor = 2;
-      while (testValue % divisor != 0 || divisor != 19) {
-         if (testValue % divisor == 0){
-            indexI++;
-            divisor = primes[indexI];
-         } else {
-            testValue++;
-            divisor = 2;
-            indexI = 0;
+      for (int i = 0; i < 20; i++){
+      morphMultiplier = multiplier;
+      ArrayList<Integer> factors = new ArrayList<>();
+      int factor;
+      boolean hasExecuted = false;
+         for (int g = 0; g < 8; g++){
+            factor = primes[g];
+            while (morphMultiplier % factor == 0 && !hasExecuted && factor < morphMultiplier){
+               morphMultiplier /= factor;
+               factors.add(factor);
+               if (morphMultiplier % factor != 0){
+                  hasExecuted = true;
+               }
+            }
+            
          }
-         
+        // factors.add(multiplier);
+         if (value % morphMultiplier != 0){
+            value *= morphMultiplier;
+         }
+         if (factors.size() > 1){
+            int sampleValue = value;
+            for (int g = 0; g < factors.size(); g++){
+               if (sampleValue % factors.get(g) == 0){
+                  sampleValue /= factors.get(g);
+               } else {
+                  value *= factors.get(g);
+               }
+            }
+         }
       }
-      System.out.println(divisor);
-      System.out.println(indexI);
-      return testValue;
+      multiplier++;
+      return value;
    }
    public static void main(String[] args){
       System.out.println("The answer to problem 1 is: " + problem1());
